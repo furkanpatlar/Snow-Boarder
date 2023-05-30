@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CrashDetector : MonoBehaviour
 {
+    [SerializeField] float loadDelay = 0.5f;
     CircleCollider2D playerHead;
 
     private void Start()
@@ -11,11 +13,16 @@ public class CrashDetector : MonoBehaviour
         playerHead= GetComponent<CircleCollider2D>();
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    void OnCollisionEnter2D(Collision2D other)
     {
         if(other.gameObject.tag == "Ground" && playerHead.IsTouching(other.collider))
         {
-            Debug.Log("Kafam çarptý.");
+            Invoke("ReloadScene", loadDelay);
         }
+    }
+
+    void ReloadScene()
+    {
+        SceneManager.LoadScene(0);
     }
 }
